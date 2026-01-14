@@ -15,14 +15,13 @@
         .hotline-box { background: var(--card); border: 1px solid #333; padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
         input { width: 100%; padding: 15px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box; outline: none; }
         input:focus { border-color: var(--gold); }
-        button#analyze-btn { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        button#analyze-btn:hover { background: #b8962d; }
+        button#t-btn { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        button#t-btn:hover { background: #b8962d; }
         
-        /* 분석 결과 창 스타일 */
+        /* 결과창 디자인 */
         #result-panel { margin-top: 30px; padding: 25px; border-radius: 8px; display: none; text-align: left; border-left: 4px solid var(--gold); background: #161616; }
         .score-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; margin-bottom: 15px; }
-        .status-loading { color: var(--gold); font-weight: bold; }
-        .analysis-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-line; } /* 줄바꿈 반영 */
+        .analysis-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-line; }
     </style>
 </head>
 <body>
@@ -50,13 +49,12 @@
 
     <script>
         const i18n = {
-            ko: { tagline: "정면돌파: 데이터 오염으로부터 당신을 보호합니다.", hotline: "제보 핫라인", btn: "HCI 분석 시작", loading: "데이터 정합성 검증 중...", detail: "HCI 엔진이 기사의 과거 이력(H), 물리적 실체(C), 보도 의도(I)를 교차 분석하고 있습니다. \n(무료 서버 특성상 최초 실행 시 40초 정도 소요될 수 있습니다)" },
-            en: { tagline: "Frontal Breakthrough: Protecting you from data pollution.", hotline: "Report Hotline", btn: "Start HCI Analysis", loading: "Verifying Data Integrity...", detail: "HCI Engine is cross-analyzing History(H), Consistency(C), and Intent(I)." },
-            es: { tagline: "Avance Frontal: Protegiéndote de la contaminación de datos.", hotline: "Línea Directa", btn: "Iniciar análisis", loading: "Verificando integridad...", detail: "El motor HCI está analizando el Historial(H), la Consistencia(C) y la Intención(I)." }
+            ko: { tagline: "정면돌파: 데이터 오염으로부터 당신을 보호합니다.", hotline: "제보 핫라인", btn: "HCI 분석 시작", loading: "에이전트 연결 중... (최대 50초 소요)", detail: "일학OS 서버(Render)를 깨우고 있습니다..." },
+            en: { tagline: "Frontal Breakthrough.", hotline: "Report Hotline", btn: "Start Analysis", loading: "Connecting to Agent...", detail: "Waking up the server..." },
+            es: { tagline: "Avance Frontal.", hotline: "Línea Directa", btn: "Iniciar análisis", loading: "Conectando...", detail: "Despertando al servidor..." }
         }; 
 
         let currentLang = 'ko'; 
-
         function setLang(lang) {
             currentLang = lang;
             document.getElementById('t-tagline').innerText = i18n[lang].tagline;
@@ -64,6 +62,7 @@
             document.getElementById('t-btn').innerText = i18n[lang].btn;
         } 
 
+        // ▼▼▼ 2. 진짜 서버와 통신하는 함수 (이게 핵심입니다!) ▼▼▼
         async function requestAnalysis() {
             const url = document.getElementById('urlInput').value;
             if(!url) return alert("URL을 입력하십시오."); 
@@ -72,42 +71,38 @@
             const badge = document.getElementById('status-badge');
             const content = document.getElementById('analysis-content'); 
 
-            // UI 초기화 (로딩 중 표시)
+            // 로딩 화면 표시
             panel.style.display = 'block';
             badge.innerText = i18n[currentLang].loading;
             badge.style.background = '#333';
-            badge.style.color = '#d4af37';
+            badge.style.color = '#d4af37'; // Gold
             content.innerText = i18n[currentLang].detail; 
 
             try {
-                // 🔥 [핵심] 실제 에이전트(Render)와 통신하는 코드
+                // 여기가 진짜입니다. Render 서버로 데이터를 보냅니다.
                 const response = await fetch("https://ilhak-os-intuition.onrender.com/analyze", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ url: url })
                 });
 
                 const data = await response.json();
 
                 if (data.result) {
-                    // 성공 시 결과 출력
+                    // 성공하면 제미나이의 답변을 보여줍니다.
                     badge.innerText = "ANALYSIS COMPLETE";
-                    badge.style.background = "#28a745"; // 초록색 (완료)
+                    badge.style.background = "#28a745"; // Green
                     badge.style.color = "#fff";
-                    content.innerHTML = data.result.replace(/\n/g, "<br>"); // 줄바꿈 적용
+                    content.innerHTML = data.result.replace(/\n/g, "<br>");
                 } else {
                     throw new Error(data.error || "Unknown Error");
                 }
-
             } catch (error) {
-                // 에러 발생 시
                 console.error("Error:", error);
-                badge.innerText = "CONNECTION FAILED";
-                badge.style.background = "#dc3545"; // 빨간색 (에러)
+                badge.innerText = "SERVER SLEEPING";
+                badge.style.background = "#dc3545"; // Red
                 badge.style.color = "#fff";
-                content.innerText = "서버 연결에 실패했습니다. \n(무료 서버가 잠자고 있을 수 있습니다. 1분 뒤 다시 시도해주세요.)\n" + error.message;
+                content.innerText = "서버가 잠들어 있어 응답이 늦거나 실패했습니다. \n10초 뒤에 다시 버튼을 눌러주세요! (무료 서버 특징)";
             }
         }
     </script>
