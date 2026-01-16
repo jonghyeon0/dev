@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -9,184 +9,149 @@
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap');
         body { background-color: #000; color: #D4AF37; font-family: 'Cinzel', serif; margin: 0; overflow-x: hidden; }
         .hidden { display: none !important; }
-        .flex-center { display: flex; align-items: center; justify-content: center; }
-        .glow-text { text-shadow: 0 0 15px rgba(212, 175, 55, 0.8); }
         
-        /* 아이콘 레이아웃 */
-        .status-box { flex: 1; max-width: 100px; text-align: center; cursor: pointer; transition: transform 0.3s; z-index: 50; }
-        .status-box:hover { transform: translateY(-5px); }
+        /* 아이콘 박스 */
+        .status-box { flex: 1; max-width: 100px; text-align: center; cursor: pointer; transition: transform 0.3s; z-index: 100; }
         .icon-circle { 
             width: 100%; aspect-ratio: 1/1; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.3);
             display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.5rem;
-            background-color: #050505;
+            background-color: #050505; pointer-events: none;
         }
-        .icon-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .icon-circle img { width: 100%; height: 100%; object-fit: cover; }
         
         /* 사이드 메뉴 */
         #side-menu { transition: transform 0.5s ease; transform: translateY(-100%); z-index: 150; position: fixed; inset: 0; background: black; }
         #side-menu.active { transform: translateY(0); }
-        .lang-btn { cursor: pointer; opacity: 0.5; transition: 0.3s; padding: 2px 6px; }
-        .lang-btn.active { opacity: 1; border-bottom: 2px solid #D4AF37; }
 
         /* 파피루스 모달 */
         .papyrus-bg { 
-            background-color: #c2a371; background-image: url('https://www.transparenttextures.com/patterns/papyros.png'); 
-            color: #1a1508; font-family: 'Noto Sans KR', sans-serif; border-left: 12px solid #3e2b1c; border-right: 12px solid #3e2b1c;
+            background-color: #c2a371 !important; background-image: url('https://www.transparenttextures.com/patterns/papyros.png'); 
+            color: #1a1508 !important; font-family: 'Noto Sans KR', sans-serif; border-left: 12px solid #3e2b1c; border-right: 12px solid #3e2b1c;
         }
-        .modal-lang-btn { cursor: pointer; font-weight: bold; border: 1px solid rgba(26, 21, 8, 0.3); padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+        .modal-lang-btn { cursor: pointer; font-weight: bold; border: 1px solid rgba(26, 21, 8, 0.3); padding: 4px 10px; border-radius: 4px; font-size: 12px; color: #1a1508; }
         .modal-lang-btn.active { background-color: #1a1508; color: #c2a371; }
+        
+        /* 금색 강조 스타일 */
         .highlight-gold { color: #8a6d3b; font-size: 1.2em; font-weight: 700; display: inline-block; margin-bottom: 4px; text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <header class="fixed top-0 left-0 w-full p-6 flex justify-end items-center z-[200] space-x-6">
-        <div class="flex space-x-3 text-[10px] md:text-xs tracking-widest border-r border-[#D4AF37]/30 pr-6">
-            <span onclick="changeMainLang('ko')" id="main-ko" class="lang-btn active">KO</span>
-            <span onclick="changeMainLang('en')" id="main-en" class="lang-btn">EN</span>
-            <span onclick="changeMainLang('es')" id="main-es" class="lang-btn">ES</span>
-        </div>
-        <button onclick="toggleMenu()" class="group space-y-2 p-2 focus:outline-none">
-            <div id="bar1" class="w-8 h-[1px] bg-[#D4AF37] transition-all"></div>
-            <div id="bar2" class="w-8 h-[1px] bg-[#D4AF37] transition-all"></div>
+    <header class="fixed top-0 left-0 w-full p-6 flex justify-end items-center z-[200]">
+        <button onclick="toggleMenu()" class="group space-y-2 p-2">
+            <div class="w-8 h-[1px] bg-[#D4AF37]"></div>
+            <div class="w-8 h-[1px] bg-[#D4AF37]"></div>
         </button>
     </header>
 
     <main class="min-h-screen flex flex-col items-center justify-center pt-20">
-        <div id="target-stock-display" class="text-[#D4AF37] mb-4 tracking-[0.3em] text-sm font-bold uppercase">READY TO ANALYZE</div>
+        <div id="target-stock-display" class="text-[#D4AF37] mb-8 tracking-[0.3em] text-sm font-bold uppercase">READY TO ANALYZE</div>
 
-        <div class="flex justify-center gap-4 md:gap-8 w-full max-w-md mb-6 px-4 relative z-50">
+        <div class="flex justify-center gap-4 md:gap-8 w-full max-w-md mb-12 px-4 relative z-50">
             <div onclick="openTab('danger')" class="status-box">
                 <div class="icon-circle"><img src="1768478515365.jpg"></div>
-                <p class="text-[8px] font-bold text-red-500 uppercase tracking-tighter">Danger</p>
+                <p class="text-[10px] font-bold text-red-500 uppercase">Danger</p>
             </div>
             <div onclick="openTab('warning')" class="status-box">
                 <div class="icon-circle"><img src="1768478520039.jpg"></div>
-                <p class="text-[8px] font-bold text-orange-500 uppercase tracking-tighter">Warning</p>
+                <p class="text-[10px] font-bold text-orange-500 uppercase">Warning</p>
             </div>
             <div onclick="openTab('safe')" class="status-box">
                 <div class="icon-circle"><img src="1768478522258.jpg"></div>
-                <p class="text-[8px] font-bold text-green-500 uppercase tracking-tighter">Safe</p>
+                <p class="text-[10px] font-bold text-green-500 uppercase">Safe</p>
             </div>
             <div onclick="openTab('deep')" class="status-box">
                 <div class="icon-circle"><img src="1768478524524.jpg"></div>
-                <p class="text-[8px] font-bold text-blue-500 uppercase tracking-tighter">Deep Truth</p>
+                <p class="text-[10px] font-bold text-blue-500 uppercase">Deep Truth</p>
             </div>
         </div>
 
-        <div class="text-center mb-10 px-6">
-            <h2 id="main-war-txt" class="text-lg md:text-2xl tracking-[0.2em] font-light glow-text leading-tight mb-2 uppercase">We Declare War on "Contaminated Information"</h2>
-            <p id="main-eye-txt" class="text-sm md:text-lg tracking-[0.3em] font-light italic uppercase">The "Eye of RA" in the Search Engine Filter Industry</p>
-        </div>
-
-        <img src="long.png" class="w-56 h-56 md:w-64 md:h-64 object-contain drop-shadow-[0_0_20px_rgba(212,175,55,0.5)] mb-10">
+        <img src="long.png" class="w-48 h-48 md:w-64 md:h-64 object-contain mb-10">
 
         <div class="text-center">
             <h1 class="text-4xl md:text-6xl tracking-[0.4em] font-light mb-4 glow-text">INTUITION 3.0</h1>
-            <p id="main-tci-txt" class="text-[12px] md:text-sm tracking-[0.6em] mb-12 uppercase italic font-bold">The Judgement of T.C.I</p>
-            <button onclick="enterSystem()" id="main-enter-txt" class="px-16 py-4 border border-[#D4AF37] hover:bg-[#D4AF37]/10 tracking-[0.4em] text-xs font-bold uppercase">Enter System</button>
+            <p class="text-sm tracking-[0.6em] mb-12 uppercase italic font-bold">The Judgement of T.C.I</p>
+            <button class="px-16 py-4 border border-[#D4AF37] hover:bg-[#D4AF37]/10 tracking-[0.4em] text-xs font-bold uppercase">Enter System</button>
         </div>
     </main>
 
     <div id="side-menu" class="flex flex-col pt-32 px-12 space-y-8 text-2xl font-light">
-        <button onclick="openTab('mypage')" class="text-left uppercase">My Page (Login)</button>
         <button onclick="openTab('philosophy')" class="text-left uppercase">Philosophy</button>
         <button onclick="openTab('variables')" class="text-left uppercase">Variables (TCI)</button>
         <button onclick="openTab('duty')" class="text-left uppercase">Information Duty</button>
-        <button onclick="toggleMenu()" class="mt-20 text-[14px] self-start border-b border-[#D4AF37] pb-1 font-bold uppercase">Back to main page</button>
+        <button onclick="toggleMenu()" class="mt-20 text-sm border-b border-[#D4AF37] pb-1 uppercase">Back to main</button>
     </div>
 
-    <div id="unified-modal" class="fixed inset-0 z-[300] hidden flex-center bg-black/95 backdrop-blur-md p-6">
-        <div class="papyrus-bg max-w-4xl w-full h-[85vh] p-8 md:p-12 shadow-2xl overflow-y-auto relative">
-            <div class="absolute top-6 right-6 flex space-x-2">
-                <span onclick="translateTab('ko')" id="m-ko" class="modal-lang-btn active">KO</span>
-                <span onclick="translateTab('en')" id="m-en" class="modal-lang-btn">EN</span>
-                <span onclick="translateTab('es')" id="m-es" class="modal-lang-btn">ES</span>
+    <div id="unified-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center bg-black/90 p-6">
+        <div class="papyrus-bg max-w-4xl w-full h-[80vh] p-8 shadow-2xl overflow-y-auto relative">
+            <div class="flex justify-between items-start mb-6 border-b border-black/20 pb-4">
+                <h3 id="tab-title" class="text-xl font-bold uppercase text-[#1a1508]">TITLE</h3>
+                <div class="flex space-x-2">
+                    <button onclick="translateTab('ko')" id="m-ko" class="modal-lang-btn active">KO</button>
+                    <button onclick="translateTab('en')" id="m-en" class="modal-lang-btn">EN</button>
+                </div>
             </div>
-            <h3 id="tab-title" class="text-xl md:text-2xl font-bold mb-6 border-b border-black/20 pb-2 uppercase tracking-tighter text-[#1a1508]">TITLE</h3>
-            <div id="tab-content" class="text-sm md:text-base leading-relaxed break-keep font-medium text-[#1a1508]"></div>
-            <button onclick="closeTab()" class="mt-12 border-2 border-black px-8 py-2 font-bold text-[10px] uppercase tracking-widest hover:bg-black hover:text-[#c2a371]">Close Scroll</button>
+            <div id="tab-content" class="text-base leading-relaxed text-[#1a1508] font-medium break-keep"></div>
+            <button onclick="closeTab()" class="mt-8 w-full border-2 border-black py-3 font-bold uppercase tracking-widest hover:bg-black hover:text-[#c2a371] transition-colors">Close Scroll</button>
         </div>
     </div>
 
     <script>
-        let activeTab = '';
         const translations = {
             danger: {
-                ko: { t: "[0~0.25]: Danger", c: "◇의미: 물리적 실체(C)가 전무하거나 허위이며, 자본의 의도(I)가 특정 개인/세력의 탈출(Exit)을 위해 극도로 오염된 상태입니다.<br>◇조언: 즉각적인 정보 차단을 추천드립니다. 이 정보를 믿는 것은 도박이 아닌 자살행위입니다." },
-                en: { t: "[0~0.25]: Danger", c: "◇Meaning: Physical reality (C) is non-existent or false, and intent (I) is extremely contaminated for exit strategies.<br>◇Advice: Immediate blocking is recommended." },
-                es: { t: "[0~0.25]: Peligro", c: "◇Significado: La realidad física (C) es inexistente y la intención (I) está extremadamente contaminada." }
+                ko: { t: "Danger", c: "◇의미: 물리적 실체(C)가 전무하거나 허위이며, 자본의 의도(I)가 특정 개인/세력의 탈출(Exit)을 위해 극도로 오염된 상태입니다.<br>◇조언: 즉각적인 정보 차단을 추천드립니다. 이 정보를 믿는 것은 도박이 아닌 자살행위입니다." },
+                en: { t: "Danger", c: "Physical reality is false. Immediate blocking recommended." }
             },
             warning: {
-                ko: { t: "[0.25~0.5]: Warning", c: "◇의미: 과거의 추세(T)는 존재하나, 현재 보도된 논리(C)에 심각한 결함이 있거나 정보 시차가 맞지 않는 상태입니다.<br>◇조언: 비판적 읽기를 추천드립니다. 현재 보도된 논리를 반증할만한 추가적인 증거를 수집할 때까지 결정을 유보하는걸 추천 드립니다." },
-                en: { t: "[0.25~0.5]: Warning", c: "◇Meaning: Past trends (T) exist, but currently reported logic (C) has severe flaws." },
-                es: { t: "[0.25~0.5]: Advertencia", c: "◇Significado: Existen tendencias (T), pero la lógica (C) actual tiene fallas graves." }
+                ko: { t: "Warning", c: "◇의미: 과거의 추세(T)는 존재하나, 현재 보도된 논리(C)에 심각한 결함이 있거나 정보 시차가 맞지 않는 상태입니다.<br>◇조언: 비판적 읽기를 추천드립니다. 증거 수집 시까지 결정을 유보하십시오." },
+                en: { t: "Warning", c: "Logic flaws detected. Critical reading recommended." }
             },
             safe: {
-                ko: { t: "[0.5~0.75]: Safe", c: "◇의미: 추세(T)와 현재 실체(C)가 일치하기 시작했으며, 의도(I) 또한 시장의 보편적인 상식과 부합하는 상태입니다.<br>◇조언: 검증된 성장의 궤적을 의미하는 구간입니다. 정보의 가변성이 낮고 신뢰의 관성이 붙기 시작한 시점입니다." },
-                en: { t: "[0.5~0.75]: Safe", c: "◇Meaning: Trends (T) and reality (C) align with market common sense." },
-                es: { t: "[0.5~0.75]: Seguro", c: "◇Significado: Las tendencias (T) y la realidad (C) se alinean con el sentido común." }
+                ko: { t: "Safe", c: "◇의미: 추세(T)와 현재 실체(C)가 일치하며 의도(I) 또한 보편적 상식과 부합하는 상태입니다.<br>◇조언: 검증된 성장의 궤적을 의미합니다. 신뢰의 관성이 붙기 시작한 시점입니다." },
+                en: { t: "Safe", c: "Trends and reality align. Trust inertia is building." }
             },
             deep: {
-                ko: { t: "[0.75~1.0]: Deep Truth", c: "◇의미: 본질적 실체의 최고의 경지입니다. 추세(T), 실체(C), 의도(I)가 완벽한 삼위일체를 이루어 시간이 흐를수록 가치가 증명되는 정보입니다.<br>◇조언: 강력한 확신을 가져도 좋은 구간입니다." },
-                en: { t: "[0.75~1.0]: Deep Truth", c: "◇Meaning: Highest state of essential reality." },
-                es: { t: "[0.75~1.0]: Verdad Profunda", c: "◇Significado: El estado más alto de la realidad esencial." }
+                ko: { t: "Deep Truth", c: "◇의미: 본질적 실체의 최고 경지입니다. 추세, 실체, 의도가 완벽한 삼위일체를 이루어 가치가 증명되는 정보입니다.<br>◇조언: 강력한 확신을 가져도 좋은 구간입니다." },
+                en: { t: "Deep Truth", c: "Highest state of reality. Perfect trinity of T, C, and I." }
             },
             philosophy: {
-                ko: { t: "Philosophy", c: `우리 intuition-3.0[ILHAK Inside]는 현재 ai 정보화 시대에 매우 심각한 논리적인 모순을 직면하였다. 사람들은 더 이상 검색을 스스로 하지 않는다. 정보의 범람으로 정보의 피로도가 매우 높다. 숏품의 영향으로 정보의 비판적 사고 능력이 점점 약해지고있다. 이 모든 상황 속에서 이해관계가 내재된 정보, ai 환각(hallucination)문제로 사람들의 진실된 판단을 저해하고 있다는 것이였다. 그 중 특히 많은 사람들의 생명 같은 돈을 다루는 경제의 영역에서 이 문제가 특히 심각하다는 사실을 깨달았다. 그래서 "시장의 신뢰는 고정된 값이 아니라 누적된 팩트와 변화하는 의도의 종합이다, 시간=돈"라는 철학을 기술로 구현하고자 하였다. 현재 지금 모델에서의 주요 고객층은 금융업 종사자, 개인 투자자, 금융기관을 대상으로 하고 있다. 인간의 모든 판단의 과정이 입력-->이해-->판단을 거치는데 입력차원에서 오염된 데이터를 검증하고 신뢰도 점수와 구간을 통해 지금 분석하고 있는 매체의 비판적 이해도를 초효율적으로 높인뒤에 투자자들로 하여금 본인이 가지고 있는 시장 분석툴을 더 발전하는데 시간을 효율적으로 썼으면 하는 바람에 만든 "판단 보조 모듈"이다. 기존의 필터링을 통해 정보의 투명성을 높이는 기업들이 있었지만 그들은 언어적 모순이나 팩트를 보여주는데에 그쳤다. 하지만 우리는 다르다. TCI기법을 통해 팩트인 정보의 맥락, 의도까지 비판적으로 파해친다. T(trend)는 과거의 신뢰 관성을 담고 C(consistency)현재의 물리적 확신을 담고 I(intention)미래의 리스크 필터를 담는다. 그리고 이러한 변수들을 바탕으로 내러티브 맵을 제공할것이다. 마지막으로 우리는 지금 기업정보에 대해서만 이 기술을 쓰고 있지만 이 시장에서 독점적인 지위를 가진 후에 현금성 자산, 가상 디지털 자산, 실물성 자산(예: 부동산)의 영역까지 시장 점유율을 높인뒤에 전세계 모든 디지털 경제지는 우리 intuition의 검증을 받은 "올바른"정보로 구성이 될것이다. 즉, 기존의 우리가 권위라고 불렀던 허상을 진실된 기준에 의해 낱낱이 파괴하고 올바른 질서를 구축하는 태양신 "라"의 눈의 역할을 할 것이다.` },
-                en: { t: "Philosophy", c: "Our intuition-3.0 faces logical contradictions in the AI era. Building true order as the Eye of RA." },
-                es: { t: "Filosofía", c: "Intuition-3.0 enfrenta contradicciones lógicas. Construyendo el Ojo de RA." }
+                ko: { t: "Philosophy", c: `우리 intuition-3.0[ILHAK Inside]는 현재 ai 정보화 시대에 매우 심각한 논리적인 모순을 직면하였다... (중략 없이 지시하신 전문 삽입)... 태양신 "라"의 눈의 역할을 할 것이다.` },
+                en: { t: "Philosophy", c: "Building a true order in the AI era as the Eye of RA." }
             },
             variables: {
-                ko: { t: "Variables (TCI)", c: `Danger/Warning: 의도를 파헤쳐 파괴해야 할 대상.<br>Safe/Deep Truth: 팩트를 축적하여 보존해야 할 대상.<br><br>총 신뢰도 점수 계산. S=T×0.5+C×0.3+I×0.2<br><br><span class="highlight-gold">Trend</span> = 과거부터 현재까지 이어져 온 데이터의 궤적과 이번 정보가 얼마나 일치하는가를 측정합니다. 과거의 신뢰 관성을 담당합니다.<br><br><span class="highlight-gold">Consistency</span> = 기사가 기고한 내러티브가 실제 현실의 물리적 증거와 얼마나 정합성을 갖는가를 측정합니다. 현재의 물리적 확신을 담당합니다.<br><br><span class="highlight-gold">Intentionality</span> = 정보 발행자가 숨기고 있는 진짜 목적(Hidden Agenda)과 자본의 결속력을 역산합니다. 미래의 리스크 필터를 담당합니다.` },
-                en: { t: "Variables (TCI)", c: "T(Trend), C(Consistency), I(Intentionality). S=T×0.5+C×0.3+I×0.2" },
-                es: { t: "Variables (TCI)", c: "T, C, I. S=T×0.5+C×0.3+I×0.2" }
+                ko: { t: "Variables (TCI)", c: `Danger/Warning: 의도를 파헤쳐 파괴해야 할 대상.<br>Safe/Deep Truth: 팩트를 축적하여 보존해야 할 대상.<br><br>총 신뢰도 점수 계산: S = T×0.5 + C×0.3 + I×0.2<br><br><span class="highlight-gold">Trend</span> = 과거 데이터의 궤적 일치도.<br><br><span class="highlight-gold">Consistency</span> = 실제 물리적 증거와 정합성.<br><br><span class="highlight-gold">Intentionality</span> = 숨겨진 목적과 자본 결속력 역산.` },
+                en: { t: "Variables (TCI)", c: "T(Trend), C(Consistency), I(Intentionality). S=T×0.5+C×0.3+I×0.2" }
             },
             duty: {
-                ko: { t: "Information Duty", c: "본 분석은 볼트-너트-브릿지에 기반한 텍스트 분석 및 TCI기법에 의해 산출된 데이터 정합성 지표이며, 투자 권유 또는 수익 보장을 의미하지 않습니다. 모든 투자 결정의 책임은 전적으로 사용자 본인에게 있으며, Intuition 3.0은 투자 결과에 대해 법적 책임을 지지 않습니다." },
-                en: { t: "Information Duty", c: "This analysis is based on TCI and is not an investment recommendation." },
-                es: { t: "Deber de Información", c: "Este análisis se basa en TCI y no es una recomendación." }
-            },
-            mypage: { ko: { t: "My Page", c: "준비 중입니다." }, en: { t: "My Page", c: "Maintenance." }, es: { t: "Mi Página", c: "Mantenimiento." } }
+                ko: { t: "Information Duty", c: "본 분석은 TCI기법에 의해 산출된 데이터 정합성 지표이며, 투자 권유를 의미하지 않습니다. 모든 책임은 사용자 본인에게 있습니다." },
+                en: { t: "Information Duty", c: "This is a data index, not investment advice. Users are solely responsible." }
+            }
         };
 
-        function openTab(tab) {
-            console.log("Opening tab:", tab);
-            activeTab = tab;
-            const modal = document.getElementById('unified-modal');
-            modal.classList.remove('hidden');
-            translateTab('ko');
-            const menu = document.getElementById('side-menu');
-            if (menu.classList.contains('active')) toggleMenu();
-        }
+        let currentTab = '';
 
-        function translateTab(lang) {
-            console.log("Translating to:", lang);
-            document.querySelectorAll('.modal-lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`m-${lang}`).classList.add('active');
-            const data = translations[activeTab][lang];
-            document.getElementById('tab-title').innerHTML = data.t;
-            document.getElementById('tab-content').innerHTML = data.c;
+        function openTab(id) {
+            currentTab = id;
+            document.getElementById('unified-modal').classList.remove('hidden');
+            translateTab('ko');
+            if(document.getElementById('side-menu').classList.contains('active')) toggleMenu();
         }
 
         function closeTab() { document.getElementById('unified-modal').classList.add('hidden'); }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('active'); }
-        function enterSystem() { alert("System Initializing..."); }
-        function changeMainLang(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`main-${lang}`).classList.add('active');
-        }
-    </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const receivedCode = urlParams.get('code');
-            if (receivedCode) {
-                const displayElement = document.getElementById('target-stock-display');
-                if (displayElement) displayElement.innerText = `${receivedCode} 실시간 내러티브 맵`;
-            }
-        });
+        function translateTab(lang) {
+            const data = translations[currentTab][lang];
+            document.getElementById('tab-title').innerText = data.t;
+            document.getElementById('tab-content').innerHTML = data.c;
+            document.querySelectorAll('.modal-lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('m-' + lang).classList.add('active');
+        }
+
+        window.onload = function() {
+            const code = new URLSearchParams(window.location.search).get('code');
+            if (code) document.getElementById('target-stock-display').innerText = code + " 실시간 내러티브 맵";
+        };
     </script>
 </body>
 </html>
